@@ -1,27 +1,8 @@
 import Link from "next/link"
 import { courseRepository } from "@/lib/courses/repository"
+import FeaturedCoursesSlider from "@/components/home/FeaturedCoursesSlider"
 import CourseCard from "@/components/courses/CourseCard"
-import {
-  Code2,
-  Brain,
-  Cloud,
-  Palette,
-  Megaphone,
-  Terminal,
-  TrendingUp,
-  Users,
-  BookOpen,
-  Star,
-} from "lucide-react"
-
-const CATEGORY_ICONS: Record<string, React.ElementType> = {
-  "Web Development": Code2,
-  "Data Science": Brain,
-  "Cloud Computing": Cloud,
-  Design: Palette,
-  Marketing: Megaphone,
-  Programming: Terminal,
-}
+import { TrendingUp, Users, BookOpen, Star } from "lucide-react"
 
 const STATS = [
   { icon: Users, label: "Students", value: "10M+" },
@@ -31,12 +12,12 @@ const STATS = [
 ]
 
 const CATEGORIES = [
-  "Web Development",
-  "Data Science",
-  "Cloud Computing",
-  "Design",
-  "Marketing",
-  "Programming",
+  "Dental Anatomy",
+  "Oral Radiology",
+  "Operative Dentistry",
+  "Endodontics",
+  "Periodontics",
+  "Prosthodontics",
 ]
 
 export default async function HomePage() {
@@ -51,11 +32,11 @@ export default async function HomePage() {
       <section className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
-            Learn Without Limits
+            Learn Dentistry, Step by Step
           </h1>
           <p className="text-lg sm:text-xl text-blue-100 max-w-2xl mx-auto mb-10">
-            Discover thousands of expert-led courses in web development, data science, design, and
-            more. Start learning today and transform your career.
+            Clinical, practical dentistry courses — anatomy, radiology, endodontics, prosthodontics,
+            and more. Learn at your own pace with bite-sized lessons.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -104,11 +85,7 @@ export default async function HomePage() {
               View all
             </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredCourses.map((course) => (
-              <CourseCard key={course.id} course={course} />
-            ))}
-          </div>
+          <FeaturedCoursesSlider courses={featuredCourses} />
         </div>
       </section>
 
@@ -120,23 +97,20 @@ export default async function HomePage() {
             <p className="text-gray-500 mt-2">Find the perfect course in your area of interest</p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {CATEGORIES.map((category) => {
-              const Icon = CATEGORY_ICONS[category] ?? BookOpen
-              return (
-                <Link
-                  key={category}
-                  href={`/courses?category=${encodeURIComponent(category)}`}
-                  className="flex flex-col items-center gap-3 p-5 rounded-xl border border-gray-200 bg-gray-50 hover:border-blue-300 hover:bg-blue-50 hover:shadow-sm transition-all group"
-                >
-                  <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
-                    <Icon className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <span className="text-sm font-medium text-gray-700 text-center group-hover:text-blue-700 transition-colors">
-                    {category}
-                  </span>
-                </Link>
-              )
-            })}
+            {CATEGORIES.map((category) => (
+              <Link
+                key={category}
+                href={`/courses?category=${encodeURIComponent(category)}`}
+                className="flex flex-col items-center gap-3 p-5 rounded-xl border border-gray-200 bg-gray-50 hover:border-blue-300 hover:bg-blue-50 hover:shadow-sm transition-all group"
+              >
+                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                  <BookOpen className="w-6 h-6 text-blue-600" />
+                </div>
+                <span className="text-sm font-medium text-gray-700 text-center group-hover:text-blue-700 transition-colors">
+                  {category}
+                </span>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
