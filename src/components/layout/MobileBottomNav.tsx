@@ -2,15 +2,14 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, BookOpen, PlayCircle, Library } from "lucide-react"
+import { Home, BookOpen, Search, Library } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const items = [
   { href: "/", label: "Home", icon: Home },
   { href: "/courses", label: "Courses", icon: BookOpen },
   { href: "/my-courses", label: "My Courses", icon: Library },
-  // Lightweight shortcut; actual watch route is dynamic, but this gives a “player” affordance
-  { href: "/courses", label: "Watch", icon: PlayCircle },
+  { href: "/courses?q=", label: "Search", icon: Search },
 ]
 
 export default function MobileBottomNav() {

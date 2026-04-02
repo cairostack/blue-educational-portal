@@ -130,7 +130,11 @@ export default async function HomePage() {
               View all
             </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Slider on mobile, grid on larger screens */}
+          <div className="sm:hidden">
+            <FeaturedCoursesSlider courses={bestsellerCourses} />
+          </div>
+          <div className="hidden sm:grid grid-cols-2 lg:grid-cols-4 gap-6">
             {bestsellerCourses.map((course) => (
               <CourseCard key={course.id} course={course} />
             ))}
