@@ -1,7 +1,25 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    remotePatterns: [
+      // Strapi media uploads
+      {
+        protocol: "https",
+        hostname: "admin-blue-educational.com",
+        pathname: "/uploads/**",
+      },
+      // Placeholder / development images
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "via.placeholder.com",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
