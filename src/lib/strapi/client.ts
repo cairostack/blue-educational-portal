@@ -1,14 +1,16 @@
 /**
- * Typed Strapi v4 API client.
+ * Typed Strapi v4 API client — server-only.
  *
  * Environment variables (set in .env.local):
- *   STRAPI_BASE_URL   — Strapi API base URL, e.g. https://admin-blue-educational.com/api
- *   STRAPI_API_TOKEN  — (optional) Strapi API token for authenticated requests
+ *   STRAPI_API_URL    — Strapi API base URL (preferred), e.g. https://admin-blue-educational.com/api
+ *   STRAPI_BASE_URL   — Alias for STRAPI_API_URL (legacy / backwards-compat)
+ *   STRAPI_API_TOKEN  — Bearer token for authenticated requests (read-only)
  *
- * Both vars are server-only (no NEXT_PUBLIC_ prefix) to keep the token out of
- * the client bundle.
+ * All vars are server-only (no NEXT_PUBLIC_ prefix) to keep the token out of
+ * the client bundle. This file imports "server-only" to enforce that at build time.
  */
 
+import "server-only"
 import type { Course, Instructor, Lesson, Section } from "@/types/course"
 import type {
   StrapiCollectionResponse,
@@ -22,7 +24,9 @@ import type {
 // ── Config ─────────────────────────────────────────────────────────────────
 
 const BASE_URL = (
-  process.env.STRAPI_BASE_URL ?? "https://admin-blue-educational.com/api"
+  process.env.STRAPI_API_URL ??
+  process.env.STRAPI_BASE_URL ??
+  "https://admin-blue-educational.com/api"
 ).replace(/\/$/, "")
 
 const API_TOKEN = process.env.STRAPI_API_TOKEN

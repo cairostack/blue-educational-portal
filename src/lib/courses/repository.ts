@@ -31,7 +31,7 @@ export interface CourseRepository {
 }
 
 /** True when a Strapi base URL is configured */
-const USE_STRAPI = Boolean(process.env.STRAPI_BASE_URL)
+const USE_STRAPI = Boolean(process.env.STRAPI_API_URL ?? process.env.STRAPI_BASE_URL)
 
 // ── Local fallback (development / no API configured) ──────────────────────
 
