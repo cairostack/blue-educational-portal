@@ -72,50 +72,70 @@ export const courseRepository: CourseRepository = {
       return filterLocal(COURSES, filters)
     }
 
-    const courses = await fetchCourses({
-      search: filters?.search,
-      category: filters?.category,
-      level: filters?.level,
-    })
+    try {
+      const courses = await fetchCourses({
+        search: filters?.search,
+        category: filters?.category,
+        level: filters?.level,
+      })
 
-    // price/rating filters are not in Strapi query — apply locally
-    let result = courses
-    if (filters?.maxPrice !== undefined) {
-      result = result.filter((c) => c.price <= filters.maxPrice!)
+      // price/rating filters are not in Strapi query — apply locally
+      let result = courses
+      if (filters?.maxPrice !== undefined) {
+        result = result.filter((c) => c.price <= filters.maxPrice!)
+      }
+      if (filters?.minRating !== undefined) {
+        result = result.filter((c) => c.rating >= filters.minRating!)
+      }
+      return result
+    } catch {
+      return filterLocal(COURSES, filters)
     }
-    if (filters?.minRating !== undefined) {
-      result = result.filter((c) => c.rating >= filters.minRating!)
-    }
-    return result
   },
 
   async getCourseBySlug(slug: string): Promise<Course | null> {
     if (!USE_STRAPI) {
       return COURSES.find((c) => c.slug === slug) ?? null
     }
-    return fetchCourseBySlug(slug)
+    try {
+      return await fetchCourseBySlug(slug)
+    } catch {
+      return COURSES.find((c) => c.slug === slug) ?? null
+    }
   },
 
   async getFeaturedCourses(limit = 4): Promise<Course[]> {
     if (!USE_STRAPI) {
       return COURSES.filter((c) => c.isFeatured).slice(0, limit)
     }
-    const courses = await fetchCourses({ featured: true })
-    return courses.slice(0, limit)
+    try {
+      const courses = await fetchCourses({ featured: true })
+      return courses.slice(0, limit)
+    } catch {
+      return COURSES.filter((c) => c.isFeatured).slice(0, limit)
+    }
   },
 
   async getBestsellerCourses(limit = 4): Promise<Course[]> {
     if (!USE_STRAPI) {
       return COURSES.filter((c) => c.isBestseller).slice(0, limit)
     }
-    const courses = await fetchCourses({ bestseller: true })
-    return courses.slice(0, limit)
+    try {
+      const courses = await fetchCourses({ bestseller: true })
+      return courses.slice(0, limit)
+    } catch {
+      return COURSES.filter((c) => c.isBestseller).slice(0, limit)
+    }
   },
 
   async getCoursesByIds(ids: string[]): Promise<Course[]> {
     if (!USE_STRAPI) {
       return COURSES.filter((c) => ids.includes(c.id))
     }
-    return fetchCourses({ ids })
+    try {
+      return await fetchCourses({ ids })
+    } catch {
+      return COURSES.filter((c) => ids.includes(c.id))
+    }
   },
 }
