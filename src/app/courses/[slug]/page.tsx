@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import Image from "next/image"
 import { courseRepository } from "@/lib/courses/repository"
@@ -23,6 +24,27 @@ import {
   Star,
 } from "lucide-react"
 
+export async function generateStaticParams() {
+  const courses = await courseRepository.getCourses()
+  return courses.map((c) => ({ slug: c.slug }))
+}
+
+export async function generateMetadata(
+  props: PageProps<"/courses/[slug]">
+): Promise<Metadata> {
+  const { slug } = await props.params
+  const course = await courseRepository.getCourseBySlug(slug)
+  if (!course) return {}
+  return {
+    title: `${course.title} | Blue Educational`,
+    description: course.shortDescription || course.description.slice(0, 160),
+    openGraph: {
+      title: course.title,
+      description: course.shortDescription || course.description.slice(0, 160),
+      images: course.thumbnail ? [{ url: course.thumbnail }] : [],
+    },
+  }
+}
 
 export default async function CourseDetailPage(props: PageProps<"/courses/[slug]">) {
   const { slug } = await props.params

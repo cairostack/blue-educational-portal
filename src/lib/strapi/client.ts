@@ -91,6 +91,7 @@ async function strapiGet<T>(
 
   const res = await fetch(url, {
     headers: buildHeaders(),
+    signal: AbortSignal.timeout(8000),
     // Next.js extended fetch options for ISR
     next: {
       revalidate: opts.revalidate ?? 3600,

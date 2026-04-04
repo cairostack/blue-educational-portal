@@ -1,7 +1,13 @@
+import type { Metadata } from "next"
 import { Suspense } from "react"
 import { courseRepository } from "@/lib/courses/repository"
 import CourseCard from "@/components/courses/CourseCard"
 import CourseFilters from "@/components/courses/CourseFilters"
+
+export const metadata: Metadata = {
+  title: "All Courses | Blue Educational",
+  description: "Browse expert-led dentistry courses — anatomy, radiology, endodontics, prosthodontics, and more.",
+}
 
 
 export default async function CoursesPage({
